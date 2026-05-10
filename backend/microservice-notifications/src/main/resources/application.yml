@@ -1,0 +1,30 @@
+logging:
+  level:
+    root: INFO
+    com.example.microservice_notifications: DEBUG
+
+server:
+  port: 8084
+
+spring:
+  application:
+    name: msvc-notifications
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:mysql-service}:${MYSQL_PORT:3306}/${MYSQL_DB:inventory}
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      database: mysql
+      database-platform: org.hibernate.MySQL8Dialect
+    show-sql: true
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:rabbitmq-service}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASSWORD}

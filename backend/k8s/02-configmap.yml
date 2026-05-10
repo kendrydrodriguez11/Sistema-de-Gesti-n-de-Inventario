@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: inventory-system
+data:
+  MYSQL_HOST: "mysql-service"
+  MYSQL_PORT: "3306"
+  MYSQL_DB: "inventory"
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+  RABBITMQ_HOST: "rabbitmq-service"
+  RABBITMQ_PORT: "5672"
+  AWS_REGION: "us-east-1"
+  AUTH_SERVICE_HOST: "msvc-auth-service"
+  AUTH_SERVICE_PORT: "8081"
+  INVENTORY_SERVICE_HOST: "msvc-inventory-service"
+  INVENTORY_SERVICE_PORT: "8083"
+  NOTIFICATIONS_SERVICE_HOST: "msvc-notifications-service"
+  NOTIFICATIONS_SERVICE_PORT: "8084"
+  JWT_EXPIRATION: "3600000"

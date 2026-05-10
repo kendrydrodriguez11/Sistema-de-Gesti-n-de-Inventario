@@ -1,0 +1,67 @@
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: DEBUG
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: msvc-gateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders: "*"
+            allowCredentials: true
+            exposedHeaders:
+              - Authorization
+              - Content-Type
+            maxAge: 3600
+
+      routes:
+        # Auth service
+        - id: auth-service
+          uri: http://${AUTH_SERVICE_HOST:msvc-auth-service}:${AUTH_SERVICE_PORT:8081}
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=0
+
+        # Inventory service
+        - id: inventory-service
+          uri: http://${INVENTORY_SERVICE_HOST:msvc-inventory-service}:${INVENTORY_SERVICE_PORT:8083}
+          predicates:
+            - Path=/api/inventory/**
+          filters:
+            - StripPrefix=0
+
+        # Notifications service
+        - id: notifications-service
+          uri: http://${NOTIFICATIONS_SERVICE_HOST:msvc-notifications-service}:${NOTIFICATIONS_SERVICE_PORT:8084}
+          predicates:
+            - Path=/api/notifications/**
+          filters:
+            - StripPrefix=0
+
+        # WebSocket
+        - id: websocket-service
+          uri: http://${AUTH_SERVICE_HOST:msvc-auth-service}:${AUTH_SERVICE_PORT:8081}
+          predicates:
+            - Path=/ws/**
+          filters:
+            - StripPrefix=0
+
+security:
+  service:
+    url: http://${AUTH_SERVICE_HOST:msvc-auth-service}:${AUTH_SERVICE_PORT:8081}/api/auth
