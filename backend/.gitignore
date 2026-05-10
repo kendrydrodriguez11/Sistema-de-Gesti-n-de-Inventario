@@ -1,0 +1,65 @@
+# ============================================================
+# Secretos y credenciales — NUNCA subir
+# ============================================================
+.env
+.env.local
+.env.*.local
+**/application-local.yml
+**/application-local.properties
+
+# Archivos de configuración del Config Server con valores reales
+microservice-configuration/src/main/resources/configurations/msvc-auth.yml
+microservice-configuration/src/main/resources/configurations/msvc-inventory.yml
+microservice-configuration/src/main/resources/configurations/msvc-notifications.yml
+microservice-configuration/src/main/resources/configurations/microservice-aws.yml
+microservice-configuration/src/main/resources/configurations/msvc-gateway.yml
+microservice-configuration/src/main/resources/configurations/msvc-eureka.yml
+
+# Secrets de Kubernetes con valores reales (usa 01-secrets.yml solo como plantilla)
+# k8s/01-secrets.yml  <- descomenta esta línea si pones valores reales ahí
+
+# ============================================================
+# Build
+# ============================================================
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ============================================================
+# IDEs
+# ============================================================
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositaries.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store

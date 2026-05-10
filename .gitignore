@@ -1,0 +1,74 @@
+# ============================================================
+# Sistema de Gestión de Inventario — .gitignore raíz
+# Aplica a todo el monorepo (backend + frontend)
+# ============================================================
+
+# ============================================================
+# Secretos y variables de entorno — NUNCA subir
+# ============================================================
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ============================================================
+# Sistemas operativos
+# ============================================================
+
+### macOS ###
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+### Windows ###
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+### Linux ###
+*~
+
+# ============================================================
+# IDEs y editores
+# ============================================================
+
+### VS Code ###
+.vscode/
+!.vscode/extensions.json
+
+### IntelliJ IDEA / JetBrains ###
+.idea/
+*.iml
+*.iws
+*.ipr
+
+### Eclipse ###
+.classpath
+.project
+.settings/
+.factorypath
+
+# ============================================================
+# Logs
+# ============================================================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================================
+# Docker
+# ============================================================
+docker-compose.override.yml
+
+# ============================================================
+# Kubernetes — archivos con valores reales de secretos
+# ============================================================
+# Descomenta si pones valores reales en el archivo de secrets:
+# backend/k8s/01-secrets.yml

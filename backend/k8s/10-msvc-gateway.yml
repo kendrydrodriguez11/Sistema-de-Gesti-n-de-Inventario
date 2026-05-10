@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msvc-gateway
+  namespace: inventory-system
+  labels:
+    app: msvc-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msvc-gateway
+  template:
+    metadata:
+      labels:
+        app: msvc-gateway
+    spec:
+      containers:
+        - name: msvc-gateway
+          # Reemplaza con tu imagen real: tu-registry/msvc-gateway:tag
+          image: msvc-gateway:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: AUTH_SERVICE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: AUTH_SERVICE_HOST
+            - name: AUTH_SERVICE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: AUTH_SERVICE_PORT
+            - name: INVENTORY_SERVICE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: INVENTORY_SERVICE_HOST
+            - name: INVENTORY_SERVICE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: INVENTORY_SERVICE_PORT
+            - name: NOTIFICATIONS_SERVICE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: NOTIFICATIONS_SERVICE_HOST
+            - name: NOTIFICATIONS_SERVICE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: NOTIFICATIONS_SERVICE_PORT
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "400m"
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 15
+
+---
+# Service interno para comunicación entre pods
+apiVersion: v1
+kind: Service
+metadata:
+  name: msvc-gateway-service
+  namespace: inventory-system
+spec:
+  selector:
+    app: msvc-gateway
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+---
+# Service externo para exponer el gateway al exterior del cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: msvc-gateway-external
+  namespace: inventory-system
+spec:
+  type: LoadBalancer
+  selector:
+    app: msvc-gateway
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
