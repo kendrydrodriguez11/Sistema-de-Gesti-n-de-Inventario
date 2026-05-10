@@ -28,7 +28,9 @@ jobs:
 
       - name: Compilar microservice-auth
         working-directory: backend/microservice-auth
-        run: ./mvnw clean package -DskipTests
+        run: |
+          chmod +x mvnw
+          ./mvnw clean package -DskipTests
 
       - name: Mostrar resultado
         run: echo "✅ Build completado correctamente"
